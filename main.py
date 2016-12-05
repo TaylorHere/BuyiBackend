@@ -2,10 +2,14 @@
 from SinglePage.singlepage import register,app
 
 from Model.Base import db_session
+#coding:utf-8
 from Model.User import User 
 from Model.Login import Login 
 from Model.Permission import Permission
 from Model.Order import Order
+from Model.Association_specie_supplier import Association_specie_supplier
+from Model.Specie import Specie
+from Model.Supplier import Supplier
 from SinglePage.Support.document import Documents
 from SinglePage.Support.query import Query
 
@@ -15,7 +19,10 @@ url = {
 	Permission:'/permissions/',
 	Order:'/orders/',
 	Documents:'/doc/',
-	Query:'/query/'
+	Query:'/query/',
+	Association_specie_supplier:'/association/species_suppliers/',
+	Specie:'/species/',
+	Supplier:'/suppliers/'
 }
 
 for model in url:

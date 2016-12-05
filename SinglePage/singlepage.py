@@ -187,6 +187,9 @@ class GeneralViewWithSQLAlchemy(SinglePage):
                 return False, permission
         return True, None
 
+    def get_hook_on_get_query(self,query):
+        return query
+
     def get(self, pk):
         '获取资源列表或资源'
         # 查询数据
@@ -196,6 +199,7 @@ class GeneralViewWithSQLAlchemy(SinglePage):
         if pk is not None:
             query = self.db_session.query(
                 self.object).filter(self.object.id == pk)
+            query = self.get_hook_on_get_query(query)
             return query, 'sqlalchemy'
         else:
             query = self.db_session.query(self.object)
@@ -203,6 +207,7 @@ class GeneralViewWithSQLAlchemy(SinglePage):
                 value = request.args.get(arg, None)
                 if value is not None:
                     query = self.__query_args__[arg](query, value)
+            query = self.get_hook_on_get_query(query)
             return query, 'sqlalchemy'
     # 处理http post方法
     def post_hook_before_create_object(self,data):

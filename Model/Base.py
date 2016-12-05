@@ -19,9 +19,14 @@ Base.query = db_session.query_property()
 
 
 def init_db(test_data=False):
-    import Permission
-    import User
+    import Association_specie_supplier
+    import Login
     import Order
+    import Permission
+    import Specie
+    import Supplier
+    import User
+
     Base.metadata.create_all(bind=engine)
     if test_data:
         init_data(db_session)
