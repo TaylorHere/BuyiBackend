@@ -5,7 +5,6 @@ import datetime
 from User import User
 from Base import Base, db_session
 from passlib.apps import custom_app_context as pwd_context
-from permissions.permissions import can_not_delete_this_rescources, need_json_exclude_get
 from SinglePage.singlepage import *
 
 
