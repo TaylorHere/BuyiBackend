@@ -3,7 +3,8 @@ from sqlalchemy import Column, Integer, String, Text, Boolean, Float, DateTime, 
 from sqlalchemy.orm import relationship
 
 from passlib.apps import custom_app_context as pwd_context
-
+import time
+import random
 from Base import Base, db_session
 from SinglePage.singlepage import *
 
@@ -19,12 +20,12 @@ class User(GeneralViewWithSQLAlchemy, Base):
         UNKNOWN = 'unknown'
 
     id = Column(Integer, primary_key=True)
-    telephone = Column(String(15))
+    telephone = Column(String(15), unique=True, nullable=False)
     nickname = Column(String(20))
     sex = Column('sex', Enum(SEX_CHOICE.FEMALE,
                              SEX_CHOICE.MALE, SEX_CHOICE.UNKNOWN))
     img_url = Column(String(5000))
-    openid = Column(String(50))
+    openid = Column(String(100), unique=True, nullable=False)
     password = Column(String(1000))
     permissions = relationship('Permission', backref='User')
 
@@ -33,6 +34,13 @@ class User(GeneralViewWithSQLAlchemy, Base):
 
     def pwd_verify(self, password):
         return pwd_context.verify(password, self.password)
+
+    def __init__(self):
+        qunce = [0,1,2,3,4,5,6,7,8,9,0,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+        random_qunce = random.sample(qunce,random.randint(10,20))
+        qunce = ''.join([str(q) for q in random_qunce])
+        self.openid = str(time.time())+qunce
+        super(User, self).__init__()
 
     @property
     def pwd(self):
@@ -43,6 +51,6 @@ class User(GeneralViewWithSQLAlchemy, Base):
         self.password = pwd_context.encrypt(value)
 
     __property__ = {'pwd': 'password'}
-    __in_exclude__ = ['id', 'role', 'password']
+    __in_exclude__ = ['id', 'role', 'password', 'openid']
     # 定义哪些字段不展示给前端
     __exclude__ = ['password']
