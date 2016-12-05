@@ -8,8 +8,6 @@ from Model.Order import Order
 from SinglePage.Support.document import Documents
 from SinglePage.Support.query import Query
 
-
-
 url = {
 	User:'/users/',
 	Permission:'/permissions/',

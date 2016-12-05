@@ -1,6 +1,6 @@
 # coding:utf-8
-from model.SinglePage.singlepage import SinglePage, app
-from model.SinglePage.serializer import serializer
+from SinglePage.singlepage import SinglePage, app
+from SinglePage.serializer import serializer
 
 
 class Documents(SinglePage):

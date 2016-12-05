@@ -1,5 +1,5 @@
 # coding:utf-8
-from model.SinglePage.singlepage import SinglePage, app, request, jsonify, serializer
+from SinglePage.singlepage import SinglePage, app, request, jsonify, serializer
 import redis
 import json
 from datetime import date, datetime
