@@ -46,5 +46,3 @@ class Login(GeneralViewWithSQLAlchemy, Base):
     __property__ = {'openid': '_openid', 'pwd': '_pwd'}
     __in_exclude__ = ['id', 'login_time', '_openid', 'user_id', 'base']
     __exclude__ = ['_openid']
-    __permission__ = [need_json_exclude_get,
-                      can_not_delete_this_rescources]
