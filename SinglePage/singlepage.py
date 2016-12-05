@@ -13,7 +13,7 @@ def register(cls, endpoint=''):
     endpoint = endpoint
     view = cls.as_view(cls.__name__)
     cls.pk_list = {}
-    resource_name = endpoint.replace('/', '')
+    resource_name = endpoint
     app.config['resources'].update({resource_name: cls})
     for method in cls.methods:
         lowcase_method = method.lower()
