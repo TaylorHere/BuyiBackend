@@ -13,7 +13,7 @@ class Documents(SinglePage):
                   "GET": resources[resource].get.__doc__,
                   "PUT": resources[resource].put.__doc__,
                   "POST": resources[resource].post.__doc__,
-                  "pramas": serializer.attr_dict_from_sqlalchemy_in_exclude(resources[resource]()),
+                  "fileds": serializer.attr_dict_from_sqlalchemy_in_exclude(resources[resource]()),
                   "DELETE": resources[resource].delete.__doc__}]
                 for resource in resources if resource != '/query/' and resource != '/doc/']
         _docs = [[{"url": resource, "resource": resources[resource].__doc__,
