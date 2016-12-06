@@ -61,7 +61,7 @@ class SinglePage(View):
             response, class_type = self.get(*args, **kwargs)
             if class_type == 'origin':
                 return response
-            return jsonify({'data': serializer.dump(response, class_type)})
+            return (jsonify({'data': serializer.dump(response, class_type)}),200,{'Transfer-Encoding':'chunked'})
         elif request.method == 'POST':
             if kwargs == {}:
                 try:
