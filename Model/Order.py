@@ -13,6 +13,7 @@ class Order(Base, Dynamic_permission):
     id = Column(Integer, primary_key=True)
     price = Column(String)
     quantity = Column(String)
+    rank = Column(String)
     _creat_time = Column(String)
 
     specie = relationship(

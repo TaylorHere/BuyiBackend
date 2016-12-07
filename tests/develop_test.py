@@ -69,6 +69,16 @@ def new_speice(user, speice):
             'name': '水果'
         },
         {
+            'parent_id': -1,
+            'tag': '一级',
+            'name': '水果'
+        },
+        {
+            'parent_id': -1,
+            'tag': '一级',
+            'name': '水果'
+        },
+        {
             'parent_id': 1,
             'tag': '二级',
             'name': '西瓜'
@@ -185,7 +195,7 @@ def new_order(user,order):
         order.id = r.json().get('data').get('id')
         data={
             "order_id":order.id,
-            "specie_id":1
+            "specie_id":2
         }
         _post(url='/association/species_orders/',
               data=data, headers=headers, name='新建订单')
