@@ -16,7 +16,7 @@ worker_class = 'gunicorn.workers.ggevent.GeventWorker'
 workers = multiprocessing.cpu_count() * 2 + 1
 
 chdir = path_of_current_dir
-log_dir = '/var/escort'
+log_dir = '/var/buyi'
 worker_connections = 1000
 timeout = 30
 max_requests = 2000
