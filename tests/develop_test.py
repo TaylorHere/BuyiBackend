@@ -59,45 +59,62 @@ def user_login(user):
     except Exception as e:
         pass
 
-
-def new_speice(user, speice):
+def new_A_speice(user, speice):
     headers = {'XXX-user-id': user.user_id}
-    _data = [
-        {
+    a_class = ['水果','蔬菜','海鲜','鱼产','禽类','肉制品']
+    for a in a_class:
+        data = {
             'parent_id': -1,
             'tag': '一级',
-            'name': '水果'
-        },
-        {
-            'parent_id': -1,
-            'tag': '一级',
-            'name': '水果'
-        },
-        {
-            'parent_id': -1,
-            'tag': '一级',
-            'name': '水果'
-        },
+            'name': a,
+            "img_url": "xxxxxxx.jpg",
+            "describe": "xxx"
+        }
+        r = _post(url='/species/', data=data, headers=headers, name='新建一级种类')
+
+def new_B_speice(user, speice):
+    headers = {'XXX-user-id': user.user_id}
+    B = [
         {
             'parent_id': 1,
             'tag': '二级',
-            'name': '西瓜'
+            'name': '%s' % random.choice(['西瓜','草莓','香蕉','榴莲','葡萄','橙'])
         },
         {
-            'parent_id': 1,
+            'parent_id': 2,
             'tag': '二级',
-            'name': '西红柿'
+            'name': '%s' % random.choice(['白菜','黄瓜','芹菜','西红柿','紫甘蓝'])
+        },
+        {
+            'parent_id': 3,
+            'tag': '二级',
+            'name': '%s' % random.choice(['海蜇','章鱼','珍珠螺','墨鱼','三文鱼'])
+        },
+        {
+            'parent_id': 4,
+            'tag': '二级',
+            'name': '%s' % random.choice(['草鱼','团鱼','乌棒','鲫鱼','河蚌','虾'])
+        },
+        {
+            'parent_id': 5,
+            'tag': '二级',
+            'name': '%s' % random.choice(['鸡','鸭','鸽子','鹅','鹌鹑'])
+        },
+        {
+            'parent_id': 6,
+            'tag': '二级',
+            'name': '%s' % random.choice(['羊肉','牛肉','猪肉'])
         },
     ]
-    _data = random.choice(_data)
+    d = random.choice(B)
     data = {
-        "parent_id": _data['parent_id'],
-        "tag": _data['tag'],
-        "name": _data['name'],
+        "parent_id": d['parent_id'],
+        "tag": d['tag'],
+        "name": d['name'],
         "img_url": "xxxxxxx.jpg",
         "describe": "xxx"
     }
-    r = _post(url='/species/', data=data, headers=headers, name='新建种类')
+    r = _post(url='/species/', data=data, headers=headers, name='新建二级种类')
     try:
         speice.id = r.json().get('data').get('id')
     except Exception as e:
@@ -107,7 +124,7 @@ def new_speice(user, speice):
 def new_supplyer(user, supplier):
     headers = {'XXX-user-id': user.user_id}
     data = {
-        "name":"成都托普蔬菜%s号基地" % random.choice(['1','2','3','4','5','6','7']),
+        "name":"四川%s号基地" % random.choice(['1','2','3','4','5','6','7']),
         "address":"成都托普",
         "tag":"一级供货商"
     }
@@ -120,7 +137,9 @@ def new_supplyer(user, supplier):
 def new_market(user, market):
     headers = {'XXX-user-id': user.user_id}
     data = {
-        "name":"成都托普%s菜市场" % random.choice(['1','2','3','4','5','6','7']),
+        "name":"成都%s%s号菜市场"
+         % (random.choice(['托普','红光','西华','团结','犀浦','高新南','高新西']),
+          random.choice(['1','2','3','4','5','6','7']))
     }
     r = _post(url='/markets/', data=data, headers=headers, name='新建市场')
     try:
@@ -130,7 +149,7 @@ def new_market(user, market):
 def new_pedlar(user, pedlar):
     headers = {'XXX-user-id': user.user_id}
     data = {
-        "name":"成都托普猪肉%s号摊位" % random.choice(['1','2','3','4','5','6','7']),
+        "name":"%s%s号摊位" % (random.choice(['海鲜','果蔬','干货','调味品']), random.choice(['1','2','3','4','5','6','7'])),
     }
     r = _post(url='/pedlars/', data=data, headers=headers, name='新建摊贩')
     try:
@@ -182,7 +201,7 @@ def new_association_markets_pedlar(user, market,pedlar,market_pedlar,supplier_ma
         market_pedlar.id = r.json().get('data').get('id')
     except Exception as e:
         pass
-def new_order(user,order):
+def new_order(user,order,specie):
     headers = {'XXX-user-id': user.user_id}
     data = {
         "price":'%s' % random.choice([1,2,3,4,5,6,7,8,9,10]),
@@ -196,7 +215,7 @@ def new_order(user,order):
         order.id = r.json().get('data').get('id')
         data={
             "order_id":order.id,
-            "specie_id":2
+            "specie_id":specie.id
         }
         _post(url='/association/species_orders/',
               data=data, headers=headers, name='新建订单')
@@ -291,60 +310,67 @@ if __name__ == '__main__':
     except Exception as e:
         loop = 1
         host = 'http://seize.space:8080'
+    user = User()
+    user.telephone = random_num()
+    new_user(user)
+    add_permission(user)
+    user_login(user)
+    speiceA = Speice()
+    new_A_speice(user, speiceA)
+    user = User()
+    user.telephone = random_num()
+    print '新建用户A'
+    new_user(user)
+    add_permission(user)
+    user_login(user)
+    print '新建用户B'
+    userB = User()
+    userB.telephone = random_num()
+    new_user(userB)
+    add_permission(userB)
+    user_login(userB)
+    print '用户A新建供应商A'
+    supplierA = Supplier()
+    new_supplyer(user, supplierA)
+    speiceB = Speice()
+    new_B_speice(user, speiceB)
+    speice_supplier = Speice_supplier()
+    new_association_species_suppliers(user, speiceB, supplierA, speice_supplier)
+    print '用户B新建供应商B'
+    supplierB = Supplier()
+    new_supplyer(user, supplierB)
+    new_B_speice(user, speiceB)
+    speice_supplier = Speice_supplier()
+    new_association_species_suppliers(user, speiceB, supplierB, speice_supplier)
+    print '用户A新建市场A'
+    marketA = Market()
+    new_market(user, marketA)
+    print '用户B新建市场B'
+    marketB = Market()
+    new_market(userB, marketB)
+    print '用户B新建商贩A'
+    pedlarA = Pedlar()
+    new_pedlar(userB, pedlarA)
+    trance = Trance()
+    trance.id =pedlarA.id
+    print '用户A新建商贩B'
+    pedlarB = Pedlar()
+    new_pedlar(user, pedlarB)
+    print '用户A新建商贩C'
+    pedlarC = Pedlar()
+    new_pedlar(user, pedlarC)
+
     start = time.time()
     for x in xrange(0,loop):
         # 随机生成手机号
-        user = User()
-        user.telephone = random_num()
-        print '新建用户A'
-        new_user(user)
-        add_permission(user)
-        user_login(user)
-        print '新建用户B'
-        userB = User()
-        userB.telephone = random_num()
-        new_user(userB)
-        add_permission(userB)
-        user_login(userB)
-        print '用户A新建供应商A'
-        supplierA = Supplier()
-        new_supplyer(user, supplierA)
-        speice = Speice()
-        new_speice(user, speice)
-        speice_supplier = Speice_supplier()
-        new_association_species_suppliers(user, speice, supplierA, speice_supplier)
-        print '用户B新建供应商B'
-        supplierB = Supplier()
-        new_supplyer(user, supplierB)
-        speice = Speice()
-        new_speice(user, speice)
-        speice_supplier = Speice_supplier()
-        new_association_species_suppliers(user, speice, supplierB, speice_supplier)
-        print '用户A新建市场A'
-        marketA = Market()
-        new_market(user, marketA)
-        print '用户B新建市场B'
-        marketB = Market()
-        new_market(userB, marketB)
-        print '用户B新建商贩A'
-        pedlarA = Pedlar()
-        new_pedlar(userB, pedlarA)
-        trance = Trance()
-        trance.id =pedlarA.id
-        print '用户A新建商贩B'
-        pedlarB = Pedlar()
-        new_pedlar(user, pedlarB)
-        print '用户A新建商贩C'
-        pedlarC = Pedlar()
-        new_pedlar(user, pedlarC)
-
+       
         print '供应商A生成订单A'
         orderA=Order()
-        new_order(user,orderA)
+        new_order(user,orderA,speiceB)
 
         print '供应商B生成订单B'
         orderB=Order()
-        new_order(user,orderB)
+        new_order(user,orderB,speiceB)
         
         print '供应商A发送订单A给市场A'
         supplier_market = Supplier_market()
@@ -375,10 +401,10 @@ if __name__ == '__main__':
         market_pedlar = Market_Pedlar()
         new_association_markets_pedlar(user, marketB,pedlarC,market_pedlar,supplier_market,orderA)
         
-        print '##########溯源##########'
-        trace(userB,pedlarA)
-        trace(user,pedlarB)
-        trace(user,pedlarC)
-        print '##########溯源##########'
+        # print '##########溯源##########'
+        # trace(userB,pedlarA)
+        # trace(user,pedlarB)
+        # trace(user,pedlarC)
+        # print '##########溯源##########'
     end = time.time()
     print '总耗时：' + str(end - start)
