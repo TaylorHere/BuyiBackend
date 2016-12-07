@@ -1,4 +1,4 @@
-#coding:utf-8
+# coding:utf-8
 from sqlalchemy import Column, Integer, String, Text, Boolean, Float, DateTime, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -12,7 +12,9 @@ class Order(Base, Dynamic_permission):
     __tablename__ = 'Order'
     id = Column(Integer, primary_key=True)
     price = Column(String)
-    supplier_market = relationship('Association_supplier_market',back_populates='order')
-    market_pedlar = relationship('Association_market_pedlar',back_populates='order')
+    supplier_market = relationship(
+        'Association_supplier_market', back_populates='order')
+    market_pedlar = relationship(
+        'Association_market_pedlar', back_populates='order')
 
     __in_exclude__ = ['id']

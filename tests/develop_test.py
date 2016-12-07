@@ -97,7 +97,7 @@ def new_speice(user, speice):
 def new_supplyer(user, supplier):
     headers = {'XXX-user-id': user.user_id}
     data = {
-        "name":"成都托普蔬菜基地",
+        "name":"成都托普蔬菜%s号基地" % random.choice(['1','2','3','4','5','6','7']),
         "address":"成都托普",
         "tag":"一级供货商"
     }
@@ -110,7 +110,7 @@ def new_supplyer(user, supplier):
 def new_market(user, market):
     headers = {'XXX-user-id': user.user_id}
     data = {
-        "name":"成都托普菜市场",
+        "name":"成都托普%s菜市场" % random.choice(['1','2','3','4','5','6','7']),
     }
     r = _post(url='/markets/', data=data, headers=headers, name='新建市场')
     try:
@@ -120,7 +120,7 @@ def new_market(user, market):
 def new_pedlar(user, pedlar):
     headers = {'XXX-user-id': user.user_id}
     data = {
-        "name":"成都托普猪肉一号摊位",
+        "name":"成都托普猪肉%s号摊位" % random.choice(['1','2','3','4','5','6','7']),
     }
     r = _post(url='/pedlars/', data=data, headers=headers, name='新建摊贩')
     try:
@@ -175,7 +175,7 @@ def new_association_markets_pedlar(user, market,pedlar,market_pedlar,supplier_ma
 def new_order(user,order):
     headers = {'XXX-user-id': user.user_id}
     data = {
-        "price":10
+        "price":'%s' % random.choice([1,2,3,4,5,6,7,8,9,10])
     }
     r = _post(url='/orders/',
               data=data, headers=headers, name='新建订单')
@@ -184,6 +184,8 @@ def new_order(user,order):
     except Exception as e:
         pass
 def trace(user,pedlar):
+    import time
+    start = time.time()
     headers = {'XXX-user-id': user.user_id}
     r = requests.get(url=host+'/pedlars/?filter=id='+str(pedlar.id),headers=headers)
     data = r.json().get('data')
@@ -191,25 +193,32 @@ def trace(user,pedlar):
         print u'摊贩名称: '+d.get('name')
         r = requests.get(url=host+'/association/market_pedlar/?filter=pedlar_id='+str(d.get('id')),headers=headers)
         data = r.json().get('data')
+        num = 0
         for d in data:
+            num = num +1
+            print u'线路%s' % num
             uuid = d.get('from_uuid')
-            time = d.get('creat_time')
+            creat_time = d.get('creat_time')
             market_id = d.get('market_id')
-            print u'摊贩／市场交接时间: '+time
+            print u'    摊贩／市场交接时间: '+creat_time
             r = requests.get(url=host+'/markets/?filter=id='+str(market_id),headers=headers)
             data = r.json().get('data')
             for d in data:
                 name = d.get('name')
-                print u'上游市场名称: '+name
+                print u'    上游市场名称: '+name
                 r = requests.get(url=host+'/association/suppliers_markets/?filter=_uuid='+"\'"+uuid+"\'",headers=headers)
                 data = r.json().get('data')
                 for d in data:
                     supplier_id = d.get('supplier_id')
-                    time = d.get('creat_time')
-                    print u'供货商／市场交接时间: '+time
+                    order_id = str(d.get('order_id'))
+                    creat_time = d.get('creat_time')
+                    print u'        供货商／市场交接时间: '+creat_time
+                    print u'        订单号: '+order_id
                     r = requests.get(url=host+'/suppliers/?filter=id='+str(supplier_id),headers=headers)
                     name = r.json().get('data')[0].get('name')
-                    print u'供货商名称: '+name
+                    print u'        供货商名称: '+name
+    end =time.time()
+    print u'    溯源耗时：'+ str(end-start)
     
 class User():
     user_id = -1
@@ -243,12 +252,14 @@ class Pedlar():
     id
 class Order():
     id
+class Trance():
+    id
 if __name__ == '__main__':
     try:
-        local = bool(sys.argv[1])
+        local = sys.argv[1]
         loop = int(sys.argv[2])
-        if local:
-            host = 'http://127.0.0.1:8081'
+        if local == 'true':
+            host = 'http://127.0.0.1:8080'
         else:
             host = 'http://seize.space:8080'
     except Exception as e:
@@ -265,32 +276,53 @@ if __name__ == '__main__':
         telephone = header + ''.join(body) + ''.join(tail)
         user = User()
         user.telephone = telephone
-        print '########用户模块########'
+        print '新建用户A'
         new_user(user)
         add_permission(user)
         user_login(user)
-        print '########供货商模块######'
+        print '新建供应商A'
         supplier = Supplier()
         new_supplyer(user, supplier)
         speice = Speice()
         new_speice(user, speice)
         speice_supplier = Speice_supplier()
         new_association_species_suppliers(user, speice, supplier, speice_supplier)
-        print '#########市场模块######'
+        print '新建市场A'
         market = Market()
         new_market(user, market)
-        supplier_market = Supplier_market()
-        # 发货
-        order=Order()
-        new_order(user,order)
-        new_association_suppliers_markets(user, supplier,market,supplier_market,order)
-        print '#########商贩模块######'
+        print '新建商贩A'
         pedlar = Pedlar()
         new_pedlar(user, pedlar)
+        trance = Trance()
+        trance.id =pedlar.id
+        print '供应商A生成订单'
+        order=Order()
+        new_order(user,order)
+        supplier_market = Supplier_market()
+        print '供应商A发货给市场A'
+        new_association_suppliers_markets(user, supplier,market,supplier_market,order)
         market_pedlar = Market_Pedlar()
+        print '市场A发货给商贩A'
         new_association_markets_pedlar(user, market,pedlar,market_pedlar,supplier_market,order)
-        print '##########溯源##########'
-        trace(user,pedlar)
-        print '##########溯源##########'
+        print '新建供应商B'
+        supplier = Supplier()
+        new_supplyer(user, supplier)
+        speice = Speice()   
+        new_speice(user, speice)
+        speice_supplier = Speice_supplier()
+        new_association_species_suppliers(user, speice, supplier, speice_supplier)
+        print '供应商B生成订单'
+        order=Order()
+        new_order(user,order)
+        supplier_market = Supplier_market()
+        print '供应商B发货给市场A'
+        new_association_suppliers_markets(user, supplier,market,supplier_market,order)
+        market_pedlar = Market_Pedlar()
+        print '市场A发货给商贩A'
+        new_association_markets_pedlar(user, market,pedlar,market_pedlar,supplier_market,order)
+
+        print '##########溯源商贩A##########'
+        trace(user,trance)
+        print '##########溯源商贩A##########'
     end = time.time()
     print '总耗时：' + str(end - start)

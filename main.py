@@ -36,15 +36,17 @@ url = {
 
 for model in url:
 	register(model,url[model])
-
+# request结束时断开session链接
+# 如果request遇到db错误，自动rollback事务
 @app.teardown_request
 def teardown_request(exception):
     if exception:
-    	print 'rollback###############################'
+    	print 'auto rollback'
         db_session.rollback()
         db_session.remove()
+    print 'remove db session'
     db_session.remove()
 ###########################测试服务######################################################
 if __name__ == '__main__':
-	app.run(debug=True,port=8081)
+	app.run(debug=True,port=8080)
 # TODO 自动回滚未工作
