@@ -15,7 +15,7 @@ def register(cls, endpoint=''):
     cls.pk_list = {}
     resource_name = endpoint
     app.config['resources'].update({resource_name: cls})
-    for method in cls.methods:
+    for method in cls.methods:  
         lowcase_method = method.lower()
         try:
             func = getattr(cls, lowcase_method)

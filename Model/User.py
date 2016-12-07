@@ -2,12 +2,12 @@
 from sqlalchemy import Column, Integer, String, Text, Boolean, Float, DateTime, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 
-from passlib.apps import custom_app_context as pwd_context
+from passlib.hash import pbkdf2_sha256 as pwd_context
 import time
 import random
 from Base import Base, db_session
 from SinglePage.singlepage import *
-
+import uuid
 
 class User(GeneralViewWithSQLAlchemy, Base):
     """用户资源，创建时需要pwd会被hashed，这会花费一定时间"""
@@ -36,10 +36,7 @@ class User(GeneralViewWithSQLAlchemy, Base):
         return pwd_context.verify(password, self.password)
 
     def __init__(self):
-        qunce = [0,1,2,3,4,5,6,7,8,9,0,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-        random_qunce = random.sample(qunce,random.randint(10,20))
-        qunce = ''.join([str(q) for q in random_qunce])
-        self.openid = str(time.time())+qunce
+        self.openid = str(uuid.uuid1())
         super(User, self).__init__()
 
     @property
@@ -48,7 +45,7 @@ class User(GeneralViewWithSQLAlchemy, Base):
 
     @pwd.setter
     def pwd(self, value):
-        self.password = pwd_context.encrypt(value)
+        self.password = pwd_context.hash(value)
 
     __property__ = {'pwd': 'password'}
     __in_exclude__ = ['id', 'role', 'password', 'openid']

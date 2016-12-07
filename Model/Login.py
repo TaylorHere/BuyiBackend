@@ -7,7 +7,7 @@ from Base import Base, db_session
 from passlib.apps import custom_app_context as pwd_context
 from SinglePage.singlepage import *
 
-
+import uuid
 class Login(GeneralViewWithSQLAlchemy, Base):
     """登陆接口，在user接口获取用户openid，传入openid和pwd后获得的base作为其它接口的验证凭据，请将获得的user_id和base放在header中，格式XXX-user-id:1,XXX-base:sdfasdfasd """
     db_session = db_session
@@ -40,7 +40,7 @@ class Login(GeneralViewWithSQLAlchemy, Base):
             self.pwd = request.get_json()['pwd']
             if user.pwd_verify(self.pwd):
                 self.user_id = user.id
-                self.base = pwd_context.encrypt(user.pwd)
+                self.base = str(uuid.uuid1())
                 self.login_time = datetime.now()
 
     __property__ = {'openid': '_openid', 'pwd': '_pwd'}

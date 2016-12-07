@@ -11,3 +11,8 @@ class Order(Base, Dynamic_permission):
     db_session = db_session
     __tablename__ = 'Order'
     id = Column(Integer, primary_key=True)
+    price = Column(String)
+    supplier_market = relationship('Association_supplier_market',back_populates='order')
+    market_pedlar = relationship('Association_market_pedlar',back_populates='order')
+
+    __in_exclude__ = ['id']
