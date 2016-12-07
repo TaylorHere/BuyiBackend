@@ -27,7 +27,7 @@ class Order(Base, Dynamic_permission):
         return self._creat_time
     @creat_time.setter
     def creat_time(self,value):
-        self._creat_time = str(int(time.time()*1000))
+        self._creat_time = str(int(time.time()))
     @property
     def name(self):
         name = []
