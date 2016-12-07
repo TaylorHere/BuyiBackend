@@ -44,7 +44,6 @@ def teardown_request(exception):
     	print 'auto rollback'
         db_session.rollback()
         db_session.remove()
-    print 'remove db session'
     db_session.remove()
 ###########################测试服务######################################################
 if __name__ == '__main__':
