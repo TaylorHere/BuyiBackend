@@ -274,7 +274,7 @@ if __name__ == '__main__':
         local = sys.argv[1]
         loop = int(sys.argv[2])
         if local == 'true':
-            host = 'http://127.0.0.1:8080'
+            host = 'http://127.0.0.1:8081'
         else:
             host = 'http://seize.space:8080'
     except Exception as e:

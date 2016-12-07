@@ -5,7 +5,7 @@ from sqlalchemy.orm import relationship
 from Base_class.Dynamic_Permission import Dynamic_permission
 from Base import db_session, Base
 from Model.Specie import Specie
-import datetime
+import time
 class Order(Base, Dynamic_permission):
     """订单类，提供商品和溯源信息	"""
     db_session = db_session
@@ -13,7 +13,7 @@ class Order(Base, Dynamic_permission):
     id = Column(Integer, primary_key=True)
     price = Column(String)
     quantity = Column(String)
-    _creat_time = Column(DateTime)
+    _creat_time = Column(String)
 
     specie = relationship(
         'Association_specie_order', back_populates='order')
@@ -26,7 +26,7 @@ class Order(Base, Dynamic_permission):
         return self._creat_time
     @creat_time.setter
     def creat_time(self,value):
-        self._creat_time = datetime.datetime.now()
+        self._creat_time = time.time()
     @property
     def name(self):
         name = []

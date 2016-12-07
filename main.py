@@ -49,5 +49,5 @@ def teardown_request(exception):
     db_session.remove()
 ###########################测试服务######################################################
 if __name__ == '__main__':
-	app.run(debug=True,port=8080)
+	app.run(debug=True,port=8081)
 # TODO 自动回滚未工作
