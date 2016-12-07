@@ -15,5 +15,5 @@ class Specie(Dynamic_permission,Base):
 	img_url = Column(String(140))
 	describe = Column(String(140))
 	suppliers = relationship('Association_specie_supplier', back_populates='specie')
-
+	order = relationship('Association_specie_order', back_populates='specie')
 	__in_exclude__ = ['id']

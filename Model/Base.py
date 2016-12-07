@@ -19,6 +19,7 @@ Base.query = db_session.query_property()
 
 
 def init_db(test_data=False):
+    import Association_specie_order
     import Association_market_pedlar
     import Association_specie_supplier
     import Association_supplier_market

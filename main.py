@@ -4,6 +4,7 @@ from SinglePage.singlepage import register,app
 from Model.Base import db_session
 ###########总数11############业务模型####################################################
 from Model.Association_market_pedlar import Association_market_pedlar
+from Model.Association_specie_order import Association_specie_order
 from Model.Association_specie_supplier import Association_specie_supplier
 from Model.Association_supplier_market import Association_supplier_market
 from Model.Login import Login 
@@ -20,6 +21,7 @@ from SinglePage.Support.query import Query
 ###########################接口注册######################################################
 url = {
 	Association_market_pedlar:'/association/market_pedlar/',
+	Association_specie_order:'/association/species_orders/',
 	Association_specie_supplier:'/association/species_suppliers/',
 	Association_supplier_market:'/association/suppliers_markets/',
 	Login:'/logins/',

@@ -7,6 +7,6 @@ class Association_specie_order(Dynamic_permission,Base):
 	db_session = db_session
 	__tablename__ = 'Association_specie_order'
 	order_id = Column(Integer,ForeignKey('Order.id'), primary_key=True)
-	order = relationship('Order', back_populates='specie_order')
 	specie_id = Column(Integer,ForeignKey('Specie.id'), primary_key=True)
-	specie = relationship('Specie', back_populates='specie_order')
+	specie = relationship('Specie', back_populates='order')
+	order = relationship('Order', back_populates='specie')
