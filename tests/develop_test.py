@@ -187,7 +187,8 @@ def new_order(user,order):
     data = {
         "price":'%s' % random.choice([1,2,3,4,5,6,7,8,9,10]),
         "quantity":'%s' % random.choice([1,2,3,4,5,6,7,8,9,10]),
-        "creat_time":''
+        "creat_time":'',
+        'rank':random.choice(['A','B','C'])
     }
     r = _post(url='/orders/',
               data=data, headers=headers, name='新建订单')
