@@ -61,7 +61,12 @@ class SinglePage(View):
             response, class_type = self.get(*args, **kwargs)
             if class_type == 'origin':
                 return response
-            return jsonify({'data': serializer.dump(response, class_type)})
+            import time
+            start = time.time()
+            data = serializer.dump(response, class_type)
+            end = time.time()
+            print 'serializer:'+str(end-start)
+            return jsonify({'data': data})
         elif request.method == 'POST':
             if kwargs == {}:
                 try:
@@ -202,12 +207,19 @@ class GeneralViewWithSQLAlchemy(SinglePage):
             query = self.get_hook_on_get_query(query)
             return query, 'sqlalchemy'
         else:
+            import time
+            start = time.time()
             query = self.db_session.query(self.object)
+            end = time.time()
+            print 'origin query:'+str(end-start)
+            start = time.time()
             for arg in self.__query_args__:
                 value = request.args.get(arg, None)
                 if value is not None:
                     query = self.__query_args__[arg](query, value)
             query = self.get_hook_on_get_query(query)
+            end = time.time()
+            print 'args query:'+str(end-start)
             return query, 'sqlalchemy'
     # 处理http post方法
     def post_hook_before_create_object(self,data):
