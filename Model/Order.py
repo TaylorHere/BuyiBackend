@@ -6,8 +6,8 @@ from Base_class.Dynamic_Permission import Dynamic_permission
 from Base import db_session, Base
 from Model.Specie import Specie
 import time
-from SinglePage.singlepage import SinglePage
-class Order(Base, SinglePage):
+from SinglePage.singlepage import GeneralViewWithSQLAlchemy
+class Order(Base, GeneralViewWithSQLAlchemy):
     """订单类，提供商品和溯源信息	"""
     db_session = db_session
     __tablename__ = 'Order'
