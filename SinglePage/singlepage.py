@@ -62,11 +62,16 @@ class SinglePage(View):
             if class_type == 'origin':
                 return response
             import time
-            start = time.time()
-            data = serializer.dump(response, class_type)
-            end = time.time()
-            print 'serializer:'+str(end-start)
-            return jsonify({'data': data})
+            def generator():
+                yield '['
+                for r in response:
+                    start = time.time()
+                    data = serializer.dump(r)
+                    yield json.dumps(data)+','
+                    end = time.time()
+                    print 'serilizer:'+str(end-start)
+                yield '{}]'
+            return Response(generator(),200,{'Content-type':'application/json'})
         elif request.method == 'POST':
             if kwargs == {}:
                 try:
