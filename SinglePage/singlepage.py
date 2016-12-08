@@ -63,10 +63,8 @@ class SinglePage(View):
                 return response
             def generator():
                 for r in response:
-                    start = time.time()
                     data = serializer.dump(r)
                     yield json.dumps(data)+','
-                    end = time.time()
                 yield '{}]'
             return Response(generator(),200,{'Content-type':'application/json'})
         elif request.method == 'POST':
