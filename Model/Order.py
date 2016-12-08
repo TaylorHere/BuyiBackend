@@ -12,10 +12,10 @@ class Order(Base, GeneralViewWithSQLAlchemy):
     db_session = db_session
     __tablename__ = 'Order'
     id = Column(Integer, primary_key=True)
-    price = Column(String)
-    quantity = Column(String)
-    rank = Column(String)
-    _creat_time = Column(String)
+    price = Column(String(10))
+    quantity = Column(String(40))
+    rank = Column(String(3))
+    _creat_time = Column(String(15))
 
     specie = relationship(
         'Association_specie_order', back_populates='order')

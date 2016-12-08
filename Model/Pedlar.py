@@ -9,6 +9,6 @@ class Pedlar(Dynamic_permission,Base):
 	__tablename__ = 'Pedlar'
 
 	id = Column(Integer, primary_key=True)
-	name = Column(String(200))
+	name = Column(String(100))
 	market = relationship('Association_market_pedlar', back_populates='pedlar')
 	__in_exclude__ = ['id']

@@ -24,9 +24,9 @@ class User(GeneralViewWithSQLAlchemy, Base):
     nickname = Column(String(20))
     sex = Column('sex', Enum(SEX_CHOICE.FEMALE,
                              SEX_CHOICE.MALE, SEX_CHOICE.UNKNOWN))
-    img_url = Column(String(5000))
-    openid = Column(String(100), unique=True, nullable=False)
-    password = Column(String(1000))
+    img_url = Column(String(1000))
+    openid = Column(String(125), unique=True, nullable=False)
+    password = Column(String(256))
     permissions = relationship('Permission', backref='User')
 
     def __str__(self):

@@ -9,7 +9,7 @@ class Association_market_pedlar(Dynamic_permission,Base):
 	db_session = db_session
 	__tablename__ = 'Association_market_pedlar'
 
-	_uuid = Column(String,nullable=False, unique=True)
+	_uuid = Column(String(40),nullable=False, unique=True)
 	from_uuid = Column(Integer)
 
 	_creat_time = Column(DateTime)

@@ -8,7 +8,7 @@ class Association_supplier_market(Dynamic_permission,Base):
 	db_session = db_session
 	__tablename__ = 'Association_supplier_market'
 
-	_uuid = Column(String,nullable=False, unique=True)
+	_uuid = Column(String(40),nullable=False, unique=True)
 	_creat_time = Column(DateTime)
 
 	market_id = Column(Integer,ForeignKey('Market.id'), primary_key=True ,autoincrement=False)
