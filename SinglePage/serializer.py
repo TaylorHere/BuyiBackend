@@ -38,7 +38,7 @@ class Serializer():
             return self.cycling(instance)
         elif isinstance(instance, dict):
             return self.cycling(instance)
-        elif isinstance(instance, (float, int, basestring, bool)):
+        elif isinstance(instance, (float, int, basestring, bool, long)):
             return instance
         elif isinstance(instance, datetime):
             return instance
