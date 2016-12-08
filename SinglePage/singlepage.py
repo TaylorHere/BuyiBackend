@@ -62,10 +62,11 @@ class SinglePage(View):
             if class_type == 'origin':
                 return response
             def generator():
+                yield '{"data":['
                 for r in response:
                     data = serializer.dump(r)
                     yield json.dumps(data)+','
-                yield '{}]'
+                yield '{}]}'
             return Response(generator(),200,{'Content-type':'application/json'})
         elif request.method == 'POST':
             if kwargs == {}:
