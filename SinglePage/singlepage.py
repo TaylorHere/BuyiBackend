@@ -63,7 +63,7 @@ class SinglePage(View):
                 return response
             def generator():
                 yield '{"data":['
-                for r in response.yield_per(1):
+                for r in response:
                     data = serializer.dump(r)
                     yield json.dumps(data)+','
                 yield '{}]}'
