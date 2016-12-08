@@ -10,7 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 engine = create_engine(
-    'mysql+mysqldb://root@TaylorHere357753@localhost/buyi', convert_unicode=True)
+    'mysql+mysqldb://root:TaylorHere357753@localhost/buyi', convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=True,
                                          bind=engine))
