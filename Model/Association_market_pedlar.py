@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 import datetime
 import uuid
 class Association_market_pedlar(Dynamic_permission,Base):
+	"""订单于市场方和商贩方关联资源，订单从市场方发货给商贩方，使用此接口"""
 	db_session = db_session
 	__tablename__ = 'Association_market_pedlar'
 

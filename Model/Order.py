@@ -8,7 +8,7 @@ from Model.Specie import Specie
 import time
 from SinglePage.singlepage import GeneralViewWithSQLAlchemy
 class Order(Base, GeneralViewWithSQLAlchemy):
-    """订单类，提供商品和溯源信息	"""
+    """订单类，提供商品相关信息"""
     db_session = db_session
     __tablename__ = 'Order'
     id = Column(Integer, primary_key=True)

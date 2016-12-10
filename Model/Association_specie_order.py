@@ -4,6 +4,7 @@ from sqlalchemy import Column, Integer, String, Text, Boolean, Float, DateTime, 
 from sqlalchemy.orm import relationship
 
 class Association_specie_order(Dynamic_permission,Base):
+	"""订单和订单所属种类关联接口，新建订单时，使用此接口给订单添加种类信息"""
 	db_session = db_session
 	__tablename__ = 'Association_specie_order'
 	order_id = Column(Integer,ForeignKey('Order.id'), primary_key=True)
