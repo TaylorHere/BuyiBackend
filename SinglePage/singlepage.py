@@ -62,7 +62,7 @@ class SinglePage(View):
             if class_type == 'origin':
                 return response
             if class_type == 'basic':
-                return jsonfiy(response)
+                return jsonify({"data":response})
             if class_type == 'sqlalchemy':
                 def generator():
                     yield '{"data":['
