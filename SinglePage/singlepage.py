@@ -61,13 +61,16 @@ class SinglePage(View):
             response, class_type = self.get(*args, **kwargs)
             if class_type == 'origin':
                 return response
-            def generator():
-                yield '{"data":['
-                for r in response.yield_per(100):
-                    data = serializer.dump(r)
-                    yield json.dumps(data)+','
-                yield '{}]}'
-            return Response(generator(),200,{'Content-type':'application/json'})
+            if class_type == 'basic':
+                return serializer.dump(r,class_type)
+            if class_type == 'sqlalchemy':
+                def generator():
+                    yield '{"data":['
+                    for r in response.yield_per(100):
+                        data = serializer.dump(r)
+                        yield json.dumps(data)+','
+                    yield '{}]}'
+                return Response(generator(),200,{'Content-type':'application/json'})
         elif request.method == 'POST':
             if kwargs == {}:
                 try:

@@ -23,7 +23,7 @@ class Documents(SinglePage):
                   "DELETE": resources[resource].delete.__doc__}]
                 for resource in resources if resource == '/query/' or resource == '/doc/']
         docs.append(_docs)
-        return docs, 'origin'
+        return docs, 'basic'
     def get_permission_passed(self, pk):
         return True, None
 

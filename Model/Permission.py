@@ -9,7 +9,7 @@ from SinglePage.singlepage import *
 
 
 class Permission(GeneralViewWithSQLAlchemy, Base):
-	"""权限与用户关联接口，使用此接口给用户授权"""
+    """权限与用户关联接口，使用此接口给用户授权"""
     __tablename__ = 'Permission'
     db_session = db_session
     id = Column(Integer, primary_key=True)
