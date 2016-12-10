@@ -1,3 +1,4 @@
+#coding:utf-8
 from Base_class.Dynamic_Permission import Dynamic_permission
 from Base import Base,db_session
 from sqlalchemy import Column, Integer, String, Text, Boolean, Float, DateTime, Enum, ForeignKey
