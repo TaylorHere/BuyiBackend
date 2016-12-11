@@ -39,12 +39,12 @@ url = {
     Documents: '/doc/',
     Query: '/query/',
 }
-admin = Admin(app,  template_mode='bootstrap3')
+exclude = ['/doc/', '/query']
+admin = Admin(app, template_mode='bootstrap3')
 for model in url:
     register(model, url[model])
-    admin.add_view(ModelView(model, db_session))
-
-
+    if url[model] not in exclude:
+        admin.add_view(ModelView(model, db_session))
 
 
 # request结束时断开session链接
