@@ -39,11 +39,11 @@ url = {
     Documents: '/doc/',
     Query: '/query/',
 }
-exclude = ['/doc/', '/query']
+exclude = [Documents, Query]
 admin = Admin(app, template_mode='bootstrap3')
 for model in url:
     register(model, url[model])
-    if url[model] not in exclude:
+    if model not in exclude:
         admin.add_view(ModelView(model, db_session))
 
 
