@@ -9,6 +9,7 @@ from Base import Base, db_session
 from SinglePage.singlepage import *
 import uuid
 
+
 class User(GeneralViewWithSQLAlchemy, Base):
     """用户资源，创建时需要pwd会被hashed，这会花费一定时间"""
     db_session = db_session
@@ -51,3 +52,6 @@ class User(GeneralViewWithSQLAlchemy, Base):
     __in_exclude__ = ['id', 'role', 'password', 'openid']
     # 定义哪些字段不展示给前端
     __exclude__ = ['password']
+
+    def __str__(self):
+        return self.nickname

@@ -1,4 +1,8 @@
 # coding:utf-8
+import __builtin__
+
+if getattr(__builtin__, 'profile', None) is None:
+    __builtin__.profile = lambda x: x
 ###########################框架基础######################################################
 from flask.ext.admin import Admin
 from flask.ext.admin.contrib.sqla import ModelView
@@ -57,7 +61,7 @@ def teardown_request(exception):
         db_session.remove()
     db_session.remove()
 
-
+app.config['SECRET_KEY'] = 'SuperSecretKey'
 ###########################测试服务######################################################
 if __name__ == '__main__':
     app.run(debug=True, port=8081)

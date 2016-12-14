@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 class Serializer():
-
+    # @profile
     def dump(self, origin_instance, class_type='sqlalchemy'):
         # class_type choice 'sqlalchemy', 'basic'
         self.class_type = class_type
@@ -15,6 +15,7 @@ class Serializer():
         elif self.class_type == 'basic':
             return self.typping(origin_instance)
 
+    # @profile
     def cycling(self, instance):
 
         if isinstance(instance, (set, list)):
@@ -30,6 +31,7 @@ class Serializer():
                 m_dict.update({item: value})
             return m_dict
 
+    # @profile
     def typping(self, instance):
 
         if isinstance(instance, set):
@@ -47,12 +49,14 @@ class Serializer():
         else:
             return self.typping(self.mapping(instance))
 
+    # @profile
     def mapping(self, instance):
         if self.class_type == 'basic':
             return self.attr_dict_from_basic(instance)
         elif self.class_type == 'sqlalchemy':
             return self.attr_dict_from_sqlalchemy(instance)
 
+    # @profile
     def attr_dict_from_basic(self, instance):
         try:
             exclude = [e for e in instance.__exclude__]
@@ -69,6 +73,7 @@ class Serializer():
         full.update(propery)
         return full
 
+    # @profile
     def attr_dict_from_sqlalchemy(self, instance):
         try:
             exclude = [e for e in instance.__exclude__]
@@ -85,6 +90,7 @@ class Serializer():
         full.update(property)
         return full
 
+    # @profile
     def attr_dict_from_sqlalchemy_in_exclude(self, instance):
         try:
             in_exclude = [e for e in instance.__in_exclude__]

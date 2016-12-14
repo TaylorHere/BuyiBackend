@@ -17,3 +17,6 @@ class Supplier(Dynamic_permission, Base):
     species = relationship('Association_specie_supplier', back_populates='supplier')
     markets = relationship('Association_supplier_market', back_populates='supplier')
     __in_exclude__ = ['id']
+
+    def __str__(self):
+        return self.name

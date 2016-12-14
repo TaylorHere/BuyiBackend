@@ -1,5 +1,7 @@
 from SinglePage.singlepage import GeneralViewWithSQLAlchemy, request
 from Model.User import User
+
+
 class Dynamic_permission(GeneralViewWithSQLAlchemy):
     """docstring for Dynamic_permission"""
 

@@ -8,7 +8,7 @@ import sys
 app = Flask(__name__)
 app.config['resources'] = {}
 
-
+# @profile
 def register(cls, endpoint=''):
     endpoint = endpoint
     view = cls.as_view(cls.__name__)
@@ -44,6 +44,7 @@ class SinglePage(View):
     """this is the base class of single page"""
     methods = ['GET', 'POST', 'PUT', 'DELETE']
 
+    # @profile
     def create_object(self, json=None):
         if json is not None:
             class_dict = serializer.attr_dict_from_sqlalchemy_in_exclude(self)
@@ -51,6 +52,7 @@ class SinglePage(View):
                 setattr(self, item, json[item])
         return self
 
+    @profile
     def dispatch_request(self, *args, **kwargs):
         if request.method == 'GET':
             if kwargs == {}:
@@ -64,13 +66,14 @@ class SinglePage(View):
             if class_type == 'basic':
                 return jsonify({"data":response})
             if class_type == 'sqlalchemy':
-                def generator():
-                    yield '{"data":['
-                    for r in response.yield_per(100):
-                        data = serializer.dump(r)
-                        yield json.dumps(data)+','
-                    yield '{}]}'
-                return Response(generator(),200,{'Content-type':'application/json'})
+                # def generator():
+                #     yield '{"data":['
+                #     for r in response.yield_per(100):
+                #         data = serializer.dump(r)
+                #         yield json.dumps(data)+','
+                #     yield '{}]}'
+                return jsonify({"data":serializer.dump([datas for datas in response])})
+                # return Response(generator(),200,{'Content-type':'application/json'})
         elif request.method == 'POST':
             if kwargs == {}:
                 try:
@@ -104,19 +107,22 @@ class SinglePage(View):
 
 
 class permission():
-
+    # @profile
     def get(self, db_session, cls, request, pk):
         'get permission'
         return True
 
+    # @profile
     def post(self, db_session, cls, request):
         'post permission'
         return True
 
+    # @profile
     def put(self, db_session, cls, request, pk):
         'put permission'
         return True
 
+    # @profile
     def delete(self, db_session, cls, request, pk):
         'delete permission'
         return True
@@ -128,7 +134,7 @@ class GeneralViewWithSQLAlchemy(SinglePage):
     real_delete = True
 
     # 处理http get方法
-
+    # @profile
     def filter(query, value):
         """
         等于 key = value
@@ -145,20 +151,24 @@ class GeneralViewWithSQLAlchemy(SinglePage):
 
         return query.filter(text(value))
 
+    # @profile
     def asc_order_by(query, value):
         from sqlalchemy import text
 
         return query.order_by(text(value))
 
+    # @profile
     def desc_order_by(query, value):
         from sqlalchemy import desc
         from sqlalchemy import text
 
         return query.order_by(desc(text(value)))
 
+    # @profile
     def limit(query, value):
         return query[0:int(value)]
 
+    # @profile
     def fileds(query, value):
         pass
 
@@ -172,33 +182,39 @@ class GeneralViewWithSQLAlchemy(SinglePage):
     __query_args__ = {'filter': filter, 'asc_order_by': asc_order_by,
                       'desc_order_by': desc_order_by, 'limit': limit, 'fileds': fileds}
 
+    # @profile
     def get_permission_passed(self, pk):
         for permission in self.__permission__:
             if not permission().get(self.db_session, self.object, request, pk):
                 return False, permission
         return True, None
 
+    # @profile
     def put_permission_passed(self, pk):
         for permission in self.__permission__:
             if not permission().put(self.db_session, self.object, request, pk):
                 return False, permission
         return True, None
 
+    # @profile
     def post_permission_passed(self):
         for permission in self.__permission__:
             if not permission().post(self.db_session, self.object, request):
                 return False, permission
         return True, None
 
+    # @profile
     def delete_permission_passed(self, pk):
         for permission in self.__permission__:
             if not permission().delete(self.db_session, self.object, request, pk):
                 return False, permission
         return True, None
 
+    # @profile
     def get_hook_on_get_query(self,query):
         return query
 
+    @profile
     def get(self, pk):
         '获取资源列表或资源'
         # 查询数据
@@ -219,9 +235,11 @@ class GeneralViewWithSQLAlchemy(SinglePage):
             query = self.get_hook_on_get_query(query)
             return query, 'sqlalchemy'
     # 处理http post方法
+    # @profile
     def post_hook_before_create_object(self,data):
         return data
 
+    # @profile
     def post(self):
         '新建该资源'
         # 获取request的json并新建一个用户
@@ -242,6 +260,7 @@ class GeneralViewWithSQLAlchemy(SinglePage):
         self.db_session.commit()
         return obj, 'sqlalchemy'
 
+    # @profile
     def delete(self, pk):
         '删除一个资源'
         passed, permission = self.delete_permission_passed(pk)
@@ -266,6 +285,7 @@ class GeneralViewWithSQLAlchemy(SinglePage):
             else:
                 return 'need pk', 'basic'
 
+    # @profile
     def put(self, pk):
         '更新一个资源'
         passed, permission = self.put_permission_passed(pk)

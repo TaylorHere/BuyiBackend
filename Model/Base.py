@@ -9,8 +9,10 @@ from sqlalchemy.ext.declarative import declarative_base
 # from model.init_data import init_data
 
 
+# engine = create_engine(
+#     'mysql+mysqldb://root:TaylorHere357753@seize.space/buyi', convert_unicode=True)
 engine = create_engine(
-    'mysql+mysqldb://root:TaylorHere357753@localhost/buyi', convert_unicode=True)
+    'sqlite:///buyi.db', convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=True,
                                          bind=engine))
